@@ -4,7 +4,6 @@ import org.ktorm.entity.Entity
 import org.ktorm.schema.Table
 import org.ktorm.schema.long
 import org.ktorm.schema.varchar
-import java.awt.print.Book
 
 /**
  * Created by IntelliJ IDEA.
