@@ -1,6 +1,11 @@
 package id.my.hendisantika.ktorktormpostgresql.service
 
+import id.my.hendisantika.ktorktormpostgresql.model.Book
+import id.my.hendisantika.ktorktormpostgresql.model.BookRequest
+import id.my.hendisantika.ktorktormpostgresql.model.Books
 import org.ktorm.database.Database
+import org.ktorm.entity.add
+import org.ktorm.entity.sequenceOf
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,4 +25,16 @@ class BookService {
         user = "postgres",
         password = "postgres"
     )
+
+    fun createBook(bookRequest: BookRequest): Boolean {
+        val newBook = Book {
+            name = bookRequest.name
+        }
+
+        val affectedRecordsNumber =
+            database.sequenceOf(Books)
+                .add(newBook)
+
+        return affectedRecordsNumber == 1
+    }
 }
