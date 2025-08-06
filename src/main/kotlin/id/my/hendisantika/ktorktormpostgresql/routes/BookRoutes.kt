@@ -1,12 +1,13 @@
 package id.my.hendisantika.ktorktormpostgresql.routes
 
+import com.apple.eawt.Application
 import id.my.hendisantika.ktorktormpostgresql.model.Book
 import id.my.hendisantika.ktorktormpostgresql.model.BookRequest
 import id.my.hendisantika.ktorktormpostgresql.model.BookResponse
 import id.my.hendisantika.ktorktormpostgresql.service.BookService
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.RequestEntity.post
-import org.springframework.util.RouteMatcher
+import org.springframework.web.servlet.function.RouterFunctions.route
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,8 +23,20 @@ import org.springframework.util.RouteMatcher
 private fun Book?.toBookResponse(): BookResponse? =
     this?.let { BookResponse(it.id!!, it.name) }
 
+fun Application.configureBookRoutes() {
+    routing {
+        route("/books") {
+            val bookService = BookService()
+            createBook(bookService)
+            getAllBooksRoute(bookService)
+            getBookByIdRoute(bookService)
+            updateBookByIdRoute(bookService)
+            deleteBookByIdRoute(bookService)
+        }
+    }
+}
 
-fun RouteMatcher.Route.createBook(bookService: BookService) {
+fun Route.createBook(bookService: BookService) {
     post {
         val request = call.receive<BookRequest>()
 
@@ -36,7 +49,7 @@ fun RouteMatcher.Route.createBook(bookService: BookService) {
     }
 }
 
-fun RouteMatcher.Route.getAllBooksRoute(bookService: BookService) {
+fun Route.getAllBooksRoute(bookService: BookService) {
     get {
         val books = bookService.findAllBooks()
             .map(Book::toBookResponse)
