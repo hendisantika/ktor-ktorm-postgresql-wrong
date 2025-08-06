@@ -4,7 +4,7 @@ val ktorm_version: String by project
 val postgresql_driver_version: String by project
 
 plugins {
-    id("org.springframework.boot") version "2.6.3"
+    id("org.springframework.boot") version "3.5.4"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "2.2.0"
