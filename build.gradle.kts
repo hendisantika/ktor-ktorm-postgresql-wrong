@@ -1,17 +1,22 @@
+import sun.jvmstat.monitor.MonitoredVmUtil.mainClass
+
+val ktor_version: String by project
+val kotlin_version: String by project
+val logback_version: String by project
+
+val ktorm_version: String by project
+val postgresql_driver_version: String by project
+
 plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.5.4"
-    id("io.spring.dependency-management") version "1.1.7"
+    application
+    kotlin("jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
 }
 
 group = "id.my.hendisantika"
-version = "0.0.1-SNAPSHOT"
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+version = "0.0.1"
+application {
+    mainClass.set("id.my.hendisantika.ktorktormpostgresql.KtorKtormPostgresqlApplication")
 }
 
 repositories {
@@ -19,19 +24,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
+    implementation("io.ktor:ktor-server-core:$ktor_version")
+    implementation("io.ktor:ktor-serialization:$ktor_version")
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
-    }
-}
+    implementation("org.ktorm:ktorm-core:$ktorm_version")
+    implementation("org.ktorm:ktorm-support-postgresql:$ktorm_version")
+    implementation("org.postgresql:postgresql:$postgresql_driver_version")
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
